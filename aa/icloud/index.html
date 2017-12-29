@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/icloud.css" />
+    <title>icloud</title>
+</head>
+<body ng-controller="ctrl">
+    <div class="zhezhao" ng-show="setShow" ng-click="cancel()"></div>
+    <div class="container">
+        <!--左侧开始-->
+        <div class="lside">
+            <!--左侧顶部-->
+            <div class="lside-top">
+                <div class="logo-box">
+                    <a href="##" class="logo"></a>
+                </div>
+                <a href="###" class="add" ng-click="add()"></a>
+            </div>
+            <ul class="listbox">
+                <li class="list" ng-repeat="v in todo track by $index" ng-click="selec($index)" ng-style="{background:index==$index?'#2D2D2B':''}">
+                    <div class="circle" ng-style="{background:v.color}"></div>
+                    <p>{{v.title}}</p>
+                </li>
+            </ul>
+        </div>
+        <!--左侧结束--> 
+        <div class="rside">
+            <div class="rsdie-top">
+                <input type="text" placeholder="搜索所有提醒" class="search">
+                <div class="icon">
+                    <i></i>
+                </div>
+            </div>
+            <div class="rside-tit">
+                <h3 ng-style="{color:todo[index].color}">{{todo[index].title}}</h3>
+                <div class="select">
+                    <a href="#" id="cho-btn" ng-click="showState()" ng-style="{color:todo[index].color}">选项</a>
+                    <div class="check-box" ng-show="setShow">
+                        <div class="check">
+                            <input type="text" class="shuru" ng-model="cTitle" ng-style="{color:cColor}">
+                            <h4>列表颜色</h4>
+                            <ul class="color-list">
+                                <li class="color" ng-repeat="v in colorArr" ng-style="{backgroundColor:v,borderColor:v==cColor?colorArr[$index]:''}" ng-click="changeColor(v)"></li>
+                            </ul>
+                            <div class="btn-box">
+                                <a href="##" class="del" ng-click="delete()">删除</a>
+                                <a href="##" class="cancel" ng-click="cancel()">取消</a>
+                                <span class="line"></span>
+                                <a href="##" class="complate" ng-click="complate()">完成</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="down" ng-click="comState()">
+                    <span ng-class="{true:'btnstate',false:'btnstate-hot'}[comFlag]"></span><p class="down-num">已完成：<span>{{comNum}}</span>项</p>
+                    <a href="##" class="clearall" ng-show="comFlag" ng-style="{color:todo[index].color}" ng-click="clearAll()">清除已完成事项</a>
+                </div>
+                <!--已完成-->
+                <div class="hascomplate">
+                    <ul class="downlist" ng-show="comFlag">
+                        <!--<div class="time">2016 年 11月 29 日 星期二</div>-->
+                        <li class="downitem" ng-repeat="r in todo[index].list track by $index" ng-click="changeBg($index)" ng-if="r.done">
+                            <span class="btn" ng-style="{backgroundColor:todo[index].color,borderColor:todo[index].color}"  ng-click="comToggle(r,false)"></span>
+                            <div class="text">
+                                <input type="text" ng-model="r.title">
+                                <a href="##" class="delete" ng-style="{color:todo[index].color}"  ng-click="delEvent($index)" ng-show="i==$index">删除</a>
+                            </div>
+                            <!--背景切换-->
+                            <div class="bg" ng-style="{backgroundColor:todo[index].color,opacity:i==$index?0.2:0}"></div>
+                            <div class="border-top" ng-style="{display:i==$index?'block':'none' ,background:todo[index].color}"></div>
+                            <div class="border-bottom" ng-style="{display:i==$index?'block':'none',background:todo[index].color}"></div>
+                        </li>
+                    </ul>
+                </div>
+                <!--未完成-->
+                <ul class="nocomplate">
+                    <li class="nolist" ng-repeat="r in todo[index].list track by $index" ng-if='!r.done' ng-click="changeBg($index)">
+                        <span class="btn" ng-style="{borderColor:todo[index].color}" ng-click="comToggle(r,true)"></span>
+                        <div class="text">
+                            <input type="text" ng-model="r.title">
+                            <a href="##" class="delete" ng-style="{color:todo[index].color}"  ng-click="delEvent($index)" ng-show="i==$index">删除</a>
+                        </div>
+                        <!--控制背景-->
+                        <div class="bg" ng-style="{backgroundColor:todo[index].color,opacity:i==$index?0.2:0}"></div>
+                        <div class="border-top" ng-style="{display:i==$index?'block':'none' ,background:todo[index].color}"></div>
+                        <div class="border-bottom" ng-style="{display:i==$index?'block':'none',background:todo[index].color}"></div>
+                    </li>
+                </ul>
+                <div class="down additem">
+                    <p class="down-num" ng-click="addEvent()">新项目...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/angular.min.js"></script>
+<script src="js/controller.js"></script>
+<script src="js/filter.js"></script>
+<script src="js/index.js"></script>
+<script>
+    var listbox=document.querySelector('.listbox');
+    var Sheight=document.documentElement.clientHeight;
+    listbox.style.height=Sheight-45+'px';
+    var rightcon=document.querySelector('.right-container');
+    rightcon.style.height=Sheight-126+'px';
+</script>
+</html>

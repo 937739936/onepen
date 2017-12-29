@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>反馈</title>
+    <script src="js/rem.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/pintuer.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/pintuer.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+</head>
+<body>
+<header>
+    <div class="logo-1">
+        <a class="backfont a" href="">
+            <img class="back" src="img/btn_back.png">
+        </a>
+        <span style="margin-left: 0;">信息反馈</span>
+        <a href="wo.html" class="home">
+            <div class="home-1">
+                <img class="icon" alt="" src="img/mine.png" style="margin-top: 0.04rem">
+                <p class=""style=" font-size: 12px; color:#fff;margin: 0;line-height: 20px">我的</p>
+            </div>
+        </a>
+    </div>
+    </div>
+</header>
+<div class="container">
+    <div class="line bouncein">
+        <div class="xs6 xm4 xs3-move xm4-move">
+            <div class="media media-y margin-big-bottom">
+            </div>
+            <form action="" method="post">
+                <div class="panel loginbox">
+                    <div class="text-center margin-big padding-big-top">
+                        <h1>信息反馈</h1>
+                        <p>您有什么不满或需求请及时反馈<br>我们会尽快处理</p>
+                    </div>
+                    <div class="panel-body" style="padding:30px; padding-bottom:10px; padding-top:10px;">
+                        <div class="form-group">
+                            <div class="field field-icon-right">
+                                <textarea type="text" class="input input-big" name="username" placeholder="反馈信息"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding:30px;">
+                        <input type="submit" class="btn btn-info" style="width: 100%" value="提交">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script>
+    $('.a').on('click',function (e) {
+        e.preventDefault();
+        history.go(-1)
+    })
+</script>

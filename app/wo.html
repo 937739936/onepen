@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/rem.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body style="background-color: #eeeeee;">
+<header>
+    <div class="logo-1">
+        <a class="backfont a" href="">
+            <img class="back" src="img/btn_back.png">
+        </a>
+        <span style="margin-left: 0;">我的</span>
+        <div style="width: 50px"></div>
+    </div>
+</header>
+<div>
+    <div class="geren" style="height:1.2rem; text-align: center">
+        <div class="" style="padding-top: 0.3rem;">个人中心</div>
+        <button class="btn btn-info" style="margin-top: 0.1rem;">
+            <a class="" href="login.html">登录/注册</a>
+        </button>
+    </div>
+    <!-- 入口 -->
+    <div class="" style="padding:0.08rem;padding-bottom: 1px;padding-top: 1px;">
+        <a href="dutam.html">
+            <div class="times">
+                <div class="float-left">我的资料</div>
+                <div class="float-right">
+                    <span>设置</span>
+                    <img class="icon middle"  alt="" src="img/arrow_right.png" >
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="times">
+                <div class="float-left">我的订单</div>
+                <div class="float-right">
+                    <span>更多精彩</span>
+                    <img class="icon middle"  alt="" src="img/arrow_right.png" >
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="times">
+                <div class="float-left">与我相关</div>
+                <div class="float-right">
+                    <img class="icon middle"  alt="" src="img/arrow_right.png" >
+                </div>
+            </div>
+        </a>
+        <a href="pass.html">
+            <div class="times" style="border-bottom: 1px solid #999">
+                <div class="float-left">修改密码</div>
+                <div class="float-right">
+                    <img class="icon middle"  alt="" src="img/arrow_right.png" >
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $('.a').on('click',function (e) {
+        e.preventDefault();
+        history.go(-1)
+    })
+</script>

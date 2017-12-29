@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    body{
+        background: #CDCDCD;
+    }
+    header{
+        width: 100%;
+        height: 50px;
+        background: rgba(47,47,47,0.98);
+        color: #fff;
+        font-size: 30px;
+    }
+    .cont{
+        margin: 0 auto;
+        width: 1000px;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .addtodo{
+        width: 360px;
+        height: 24px;
+        border-radius: 8px;
+        padding:0 8px;
+        line-height: 24px;
+        border: none;
+        outline: none;
+        box-shadow: 0 0 3px 3px rgba(0,0,0,0.3) inset;
+    }
+    section{
+        margin: 0 auto;
+        width: 1000px;
+        height: auto;
+    }
+    .item{
+        margin: 10px 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .item span:nth-child(2),ul>li>span{
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 20px;
+    }
+    ul li{
+        height: 30px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding:0 15px;
+        margin-bottom:10px;
+        line-height: 30px;
+    }
+    .doing>li>span{
+        background: #999;
+    }
+    .done>li>span{
+        background: #fff;
+    }
+    .doing li{
+        background: #fff;
+        border-left: 8px solid #0AA6E8;
+    }
+    .done li{
+        background: #999;
+        border-left: 8px solid #000066;
+        text-decoration:line-through;
+    }
+    textarea{
+        width: 500px;
+        border: none;
+        background: none;
+        outline: none;
+        resize: none;
+        overflow: visible;
+        height: 30px;
+        line-height: 30px;
+    }
+    input{
+        width: 18px;
+        height: 18px;
+    }
+    input,textarea{
+        vertical-align:middle;
+    }
+</style>
+<body>
+<div id="app">
+    <header>
+        <div class="cont">
+            <span>ToDoList</span>
+            <input type="text" class="addtodo" placeholder="添加ToDo" v-model="name" @keyup.enter="add">
+        </div>
+    </header>
+    <section>
+        <div class="item">
+            <span><h1>正在进行</h1></span>
+            <span>{{to.doing.length}}</span>
+        </div>
+        <ul class="doing">
+            <li v-for="(item,index) in to.doing">
+                <div>
+                    <input type="checkbox" v-model="item.judge">
+                    <textarea v-model="item.name"></textarea>
+                </div>
+                <span @click.stop="del(item.id)">-</span>
+            </li>
+        </ul>
+        <div class="item">
+            <span><h1>已经完成</h1></span>
+            <span>{{to.done.length}}</span>
+        </div>
+        <ul class="done">
+            <li v-for="(item,index) in to.done">
+                <div>
+                    <input type="checkbox" v-model="item.judge">
+                    <span>{{item.name}}</span>
+                </div>
+                <span @click.stop="del(item.id)">-</span>
+            </li>
+        </ul>
+    </section>
+</div>
+</body>
+</html>
+<script>
+    let app=new Vue({
+        el:'#app',
+        data:{
+            cont:[
+                {id:1,name:'ww',judge:true},
+                {id:2,name:'we',judge:false},
+                {id:3,name:'wq',judge:true},
+            ],
+            name:'',
+            nextid:4,
+        },
+        computed:{
+            to(){
+                var to={done:[],doing:[]};
+                var cont=this.cont
+                cont.sort( (a,b)=>{
+                    a=a.id;
+                    b=b.id;
+                    return b-a
+                });
+                this.cont.filter((item)=>{
+                    if(item.judge){
+                        to.done.push(item)
+                    }else {
+                        to.doing.push(item)
+                    }
+                })
+                return to
+            }
+        },
+        methods:{
+            add(){
+                this.cont.push({id:this.nextid,name:this.name,judge:false});
+                this.nextid++;
+            },
+            del(id){
+                this.cont.splice(this.cont.findIndex(function(val){return val.id===id}),1);
+            },
+        },
+        beforeMount(){
+            if(localStorage.getItem('cont')){
+                this.cont=JSON.parse(localStorage.getItem('cont'));
+                this.nextid=JSON.parse(localStorage.getItem('nextid'));
+            }else{
+                localStorage.setItem('cont',JSON.stringify(this.cont));
+                localStorage.setItem('nextid',JSON.stringify(this.nextid));
+            }
+        },
+        updated(){
+            localStorage.setItem('cont',JSON.stringify(this.cont));
+            localStorage.setItem('nextid',JSON.stringify(this.nextid));
+        }
+    })
+</script>

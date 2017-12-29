@@ -1,0 +1,258 @@
+body{
+    background: #eeeeee;
+}
+header{
+    width: 100%;
+    background: #31A9E8;
+    color: #fff;
+    min-width: 320px;
+    height: 48px;
+    font-size: 22px;
+    line-height: 48px;
+    padding:0 10px;
+}
+input{
+    vertical-align:middle;
+}
+.logo {
+    margin: 0 auto;
+    text-align: center;
+}
+.logo-1{
+    display: flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+}
+.home {
+    width: 58px;
+    font-size: 16px;
+    line-height: 48px;
+    padding-left: 6px;
+    position: relative;
+}
+.home-1{
+    margin: 0 auto;
+    line-height: 14px;
+    text-align: center;
+    padding-top: 5px;
+}
+a.home {
+    color: #fff;
+}
+a.home:before {
+    content: "";
+    top: 0;
+    left: 0;
+    height: 100%;
+    position: absolute;
+    border-right: 1px solid #0096E4;
+}
+.backfont{
+    width: 50px;
+    padding-left: 18px;
+    position: relative;
+}
+.backfont:before {
+    content: "";
+    top: 0;
+    right: 0;
+    height: 100%;
+    position: absolute;
+    border-right: 1px solid #0096E4;
+}
+.naivis{
+    padding: 10px;
+    box-sizing:border-box;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+}
+.naivis a{
+    display: block;
+    width: calc(50% - 5px);
+    height: 50%;
+    padding-bottom: 15px;
+    float: left;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition:background-color 0.3s;
+    border-radius: 10%;
+}
+.naivis span{
+    display:block;
+    width: 100%;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-top: 100px;
+    margin-top: -webkit-calc(50% - 70px);
+    margin-top: calc(50% - 70px);
+}
+.naivis a.searincity{
+    background-color:#1EB67F;
+}
+.naivis a.searincity span{
+    background-image: url("../img/exchange.png");
+    background-size: 115px 85px;
+}
+.naivis a.btwincity{
+    background-color: #6CC7E3;
+    margin-left: 10px;
+}
+.naivis a.btwincity span{
+    background-image: url("../img/flights.png");
+    background-size: 120px 92px;
+}
+.naivis a.ticket{
+    background-color: #F38431;
+    margin-top: 10px;
+}
+.naivis a.ticket span{
+    background-image: url("../img/tickets.png");
+    background-size: 120px 89px;
+}
+.naivis a.metromap{
+    background-color: #EBB03C;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.naivis a.metromap span{
+    background-image: url("../img/map.png");
+    background-size: 120px 89px;
+}
+.feedback{
+    color: #5A5A5A;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    margin: 15px 0;
+}
+.options {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #ECF0F3;
+    clear: both;
+    margin-top: 10px;
+    color: #5A5A5A;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.options a {
+    padding: 0 3px;
+    color: #5A5A5A;
+    font-size: 14px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.5);
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.copy{
+    text-align: center;
+    color: #999a99;
+    width: 100%;
+    font-size: 14px
+}
+
+
+/*index1*/
+.title {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.title>a {
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    display: block;
+    color: #31A9E8;
+}
+.title>a.ti{
+    background: #D9DCDF;
+    color: #5A5A5A;
+}
+.impbox {
+    width: 90%;
+    height: auto;
+    clear: both;
+    margin: 10px auto;
+}
+.condi {
+    height: 45px;
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+.connot{
+    color: #666;
+    font-size: 20px;
+    display: block;
+    float: left;
+    width: 100%;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    background: #E4E7EA;
+}
+.contouch {
+    background: #31A9E8;
+    color: #FFF;
+}
+.footinput {
+    width: 100%;
+    margin-top: 10px;
+    height: 40px;
+    line-height: 30px;
+    background-image: url(../img/bigmi.png);
+    background-repeat: no-repeat;
+    background-size: 29px 29px;
+    background-position: calc(50% - 30px) center;
+    display: block;
+    color: white;
+    text-align: center;
+    text-indent: 40px;
+    font-size: 20px;
+}
+
+/*html2*/
+.icon{
+    width: 0.18rem;
+}
+
+/*html3*/
+.time{
+    margin-top: 5px;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #31A9E8;
+}
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
+    color: #999;
+}
+
+/*wo*/
+.geren{
+
+}
+.times{
+    border: 1px solid #999;
+    border-bottom: 0;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    text-indent: 0.08rem;
+    background: #fff;
+}

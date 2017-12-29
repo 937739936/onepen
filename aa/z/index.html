@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字母消除游戏</title>
+    <script src="jquery.min.js"></script>
+    <script src="index.js"></script>
+    <link rel="icon" href="A_Z/A.png">
+</head>
+<style>
+    body{
+        width: 100%;
+        height: 100%;
+        margin:0;
+        overflow: hidden;
+        background: url("img/bg.png") repeat center top;
+    }
+    .box{
+        width: 800px;
+        height: 500px;
+        margin:0 auto;
+        margin-top: 30px;
+        border:1px solid #333;
+        position: relative;
+        background:#999;
+        font-size: 20px;
+        line-height: 50px;
+        text-align: center;
+    }
+    .box img{
+        position: absolute;
+    }
+    .xin-1{
+        width: 60px;
+        height: 50px;
+        position: absolute;
+        left: -130px;
+        top:140px;
+        border-radius: 15px;
+        background: #e2b241;;
+    }
+    .xin-2{
+        width: 60px;
+        height: 50px;
+        position: absolute;
+        left: -130px;
+        top:210px;
+        border-radius: 15px;
+        background: #e2b241;;
+    }
+    .xin-3{
+        width: 60px;
+        height: 50px;
+        position: absolute;
+        left: -130px;
+        top:280px;
+        border-radius: 15px;
+        background: #e2b241;;
+    }
+    .live{
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        border:1px solid #333;
+        font-size: 30px;
+        color: red;
+        text-align: center;
+        line-height: 50px;
+        position: absolute;
+        left: -70px;
+        top:140px;
+        background:#fff;
+    }
+    .fenshu{
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        border:1px solid #333;
+        font-size: 30px;
+        color: #333;
+        text-align: center;
+        line-height: 50px;
+        position: absolute;
+        left: -70px;
+        top:210px;
+        background:#fff;
+    }
+    .guan{
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        border:1px solid #333;
+        font-size: 30px;
+        color: blue;
+        text-align: center;
+        line-height: 50px;
+        position: absolute;
+        left: -70px;
+        top:280px;
+        background:#fff;
+    }
+    .kaiguan{
+        width: 110px;
+        height: 50px;
+        border-radius: 15px;
+        border:1px solid #333;
+        font-size: 30px;
+        color: #333;
+        text-align: center;
+        line-height: 50px;
+        position: absolute;
+        left: -130px;
+        top:0;
+        background:#e2b241;
+    }
+    .key{
+        width: 110px;
+        height: 50px;
+        border-radius: 15px;
+        border:1px solid #333;
+        font-size: 30px;
+        color: #333;
+        text-align: center;
+        line-height: 50px;
+        position: absolute;
+        left: -130px;
+        top:70px;
+        background:#e2b241;
+    }
+    .text{
+        width: 200px;
+        height: 490px;
+        background: #999;
+        position: absolute;
+        top:0;
+        left: 820px;
+        font-size: 18px;
+        line-height: 20px;
+        text-align: left;
+        padding: 5px;
+    }
+</style>
+<body>
+    <div class="box">
+        <div class="xin-1">生命：</div>
+        <div class="live">10</div>
+        <div class="xin-2">分数：</div>
+        <div class="fenshu">0</div>
+        <div class="xin-3">关卡：</div>
+        <div class="guan">1</div>
+        <div class="kaiguan">开始</div>
+        <div class="key">重来</div>
+        <div class="text">
+            <h2>字母消除</h2>
+            <p><b>游戏说明：</b>
+                <br>
+                1.页面加载完成后，点击开始（或摁空格）即可开始游戏
+                <br>
+                2.当有字母落下时，摁下响应的字母键，可消除字母，若字母消除，可得一分，字母落下还没有消除，则失去一点生命。
+                <br>
+                3.游戏过程中，点击继续，或者空格可以暂停游戏
+                <br>
+                4.当分数达到关卡数的20倍时，进入下一关，难度提升，同时出现字母上限加 1
+                <br>
+                5.若生命为  0  结束游戏
+                <br>
+                加油！挑战者们！</p>
+    </div>
+</body>
+</html>
+<script>
+    var kaiguan=document.querySelector('.kaiguan')
+    var k=document.querySelector('.key')
+    var game=new game
+    var f=true,s=true
+    function kai() {
+        game.play()
+    }
+    function guan() {
+        clearInterval(game.t)
+    }
+    function jixu() {
+        game.move()
+    }
+    kaiguan.onclick=function () {
+        kaiguanfun()
+    }
+    k.onclick=function () {
+        var imgs=document.querySelectorAll('img')
+        if(imgs){
+            imgs.forEach(function(val){
+                game.box.removeChild(val)
+            })
+        }
+        game.current=[],
+        game.le=3,
+        clearInterval(game.t)
+        game.fenshu.innerText=0
+        game.guan.innerText=1
+        game.live.innerText=10
+        kaiguan.innerText='开始'
+        f=true,s=true
+    }
+    function kaiguanfun() {
+        if(f){
+            f=false
+            kai()
+            kaiguan.innerText='暂停'
+        }else {
+            if(s){
+                s=false
+                guan()
+                kaiguan.innerText='继续'
+            }else {
+                s=true;
+                jixu()
+                kaiguan.innerText='暂停'
+            }
+        }
+    }
+    document.onkeydown=function (e) {
+        var kong=e.keyCode
+//        console.log(kong)
+        if(kong==32){
+            kaiguanfun()
+        }
+    }
+</script>

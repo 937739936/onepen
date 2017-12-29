@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>memo</title>
+    <script src="vue.js"></script>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        box-sizing: border-box;
+    }
+    body{
+        background: #CDCDCD;
+    }
+    header{
+        width: 100%;
+        height: 50px;
+        background: rgba(47,47,47,0.98);
+        color: #fff;
+        font-size: 30px;
+    }
+    .cont{
+        margin: 0 auto;
+        width: 1000px;
+        height: 100%;
+        display: flex;
+        /*justify-content: space-between;*/
+        align-items: center;
+    }
+    .cont>span,.cont>input,.cont>section{
+        margin-right: 20px;
+    }
+    .addmemo,.classify,.calss{
+        width: 200px;
+        height: 24px;
+        border-radius: 8px;
+        padding:0 8px;
+        line-height: 24px;
+        border: none;
+        outline: none;
+        box-shadow: 0 0 3px 3px rgba(0,0,0,0.3) inset;
+    }
+    .classify{
+        width: 100px;
+    }
+    section{
+        width: 100%;
+        height: calc(100vh - 50px);
+        overflow: hidden;
+        position: relative;
+    }
+    .memo{
+        width: 200px;
+        height: 200px;
+        position: absolute;
+    }
+    .memohear{
+        width: 100%;
+        height: 40px;
+        padding: 0 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .memohear h1{
+        height: 40px;
+        line-height: 40px;
+    }
+    .calss{
+        margin-left: 50px;
+        width: 60px;
+        padding: 0 2px;
+        box-shadow: 0 0 1px 1px rgba(0,0,0,0.3) inset;
+    }
+    .del{
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: red;
+        color: #fff;
+        text-align: center;
+        line-height: 16px;
+        font-size: 16px;
+        border:2px solid #fff;
+        box-shadow: 1px 1px 1px 1px rgba(255,255,255,0.3);
+    }
+    .memocont{
+        width: 100%;
+        height: 160px;
+        padding: 10px;
+    }
+    textarea{
+        resize: none;
+    }
+    .active{
+        box-shadow: 0 0 5px rgba(0,0,0,0.4) ;
+        z-index: 100;
+    }
+</style>
+<body>
+    <div id="app">
+        <header>
+            <div class="cont">
+                <span>Memo</span>
+                <input type="text" class="addmemo" placeholder="查找Memo" v-model="val">
+                <span style="font-size: 20px">分类：</span>
+                <select name="" id="" class="classify" v-model="tyle">
+                    <option value="全部">全部</option>
+                    <option v-for="item in tyles" :value="item">{{item}}</option>
+                </select>
+            </div>
+        </header>
+        <section @mousemove="move" @dblclick.self="add">
+                <li v-for="item in to" class="memo" :class="{active:item.id===checkid}" :style="{'top':item.y+'px','left':item.x+'px'}" @mousedown.stop="checkid=item.id">
+                    <div class="memohear" :style="{'background':item.color}" @mousedown.self="down" @mouseup.self.stop="up">
+                        <h1>{{item.title}}</h1>
+                        <select name="" class="calss" v-model="item.tyle">
+                            <option v-for="items in tyles" :value="items">{{items}}</option>
+                        </select>
+                        <span class="del" @mousedown.stop="del(item.id)">×</span>
+                    </div>
+                    <textarea class="memocont" v-model="item.cont"></textarea>
+                </li>
+        </section>
+    </div>
+</body>
+</html>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            memocont:[
+                {id:1,title:'你',cont:'你是',color:'#666',x:100,y:100,tyle:'娱乐'},
+                {id:2,title:'我',cont:'我是',color:'#999',x:200,y:200,tyle:'学习'},
+                {id:3,title:'他',cont:'他是',color:'#999',x:300,y:300,tyle:'工作'},
+                {id:4,title:'她',cont:'她是',color:'#999',x:400,y:400,tyle:'休闲'},
+            ],
+            memonextid:5,
+            checkid:0,
+            judge:{x:0, y:0,},
+            status:false,
+            tyle:'全部',
+            tyles:['娱乐','学习','工作','休闲'],
+            val:'',
+        },
+        computed:{
+            to(){
+                var to=[];
+                if(this.tyle=='全部'){
+                    to=this.memocont.filter((item)=> {
+                        return item.cont.includes(this.val)
+                    })
+                }else{
+                    var tos=[];
+                    this.memocont.filter((item)=>{
+                        if(item.tyle==this.tyle){
+                            tos.push(item)
+                        }
+                    });
+                    to=tos.filter((item)=> {
+                        return item.cont.includes(this.val)
+                    })
+                }
+                return to
+            }
+        },
+        methods:{
+            down(e) {
+                this.status=true;
+                this.judge.x = e.offsetX;
+                this.judge.y = e.offsetY;
+            },
+            move(e) {
+                if (this.status){
+                    this.memocont.filter((index)=>{
+                        if(index.id==this.checkid){
+                            index.x=e.clientX-this.judge.x;
+                            index.y=e.clientY-this.judge.y-50;
+                        }
+                    })
+                }
+            },
+            up(e) {
+                this.status=false;
+            },
+            del(id){
+                this.memocont.splice(this.memocont.findIndex(function(val){return val.id===id}),1);
+            },
+            add(e){
+                let a=Math.floor(Math.random()*255);
+                let b=Math.floor(Math.random()*255);
+                let c=Math.floor(Math.random()*255);
+                this.memocont.push({id:this.memonextid,title:'',cont:'',color:`rgb(${a},${b},${c})`,x:e.clientX,y:e.clientY-50,tyle:this.tyle=='全部'? "娱乐":this.tyle,});
+                this.memonextid++;
+            }
+        },
+        beforeMount(){
+            if(localStorage.getItem('memocont')){
+                this.memocont=JSON.parse(localStorage.getItem('memocont'));
+                this.memonextid=JSON.parse(localStorage.getItem('memonextid'));
+            }else{
+                localStorage.setItem('memocont',JSON.stringify(this.memocont));
+                localStorage.setItem('memonextid',JSON.stringify(this.memonextid));
+            }
+        },
+        updated(){
+            localStorage.setItem('memocont',JSON.stringify(this.memocont));
+            localStorage.setItem('memonextid',JSON.stringify(this.memonextid));
+
+        }
+    })
+</script>

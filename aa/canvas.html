@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>画布</title>
+    <link rel="icon" href="img/T.png">
+</head>
+<style>
+    body{
+        width: 100%;
+        height: 100%;
+        background: url("img/bg.png") repeat center top;
+    }
+    main{
+        width: 1000px;
+        height: 400px;
+        margin: 0 auto;
+        margin-top: 30px;
+        position: relative;
+        left: -100px;
+        background: #fff;
+    }
+    main input{
+        width: 100px;
+        height: 24px;
+        font-size: 16px;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 24px;
+        background: #fff;
+        border: 1px solid #333;
+        padding: 0;
+        margin: 3px 0;
+    }
+    canvas{
+        border:1px solid #333;
+    }
+    .on{
+        border: 2px solid red;
+    }
+    .gn{
+        position: absolute;
+        left: 1010px;
+        top:0;
+    }
+</style>
+<body>
+<main>
+    <canvas width='1000'height="400"></canvas>
+    <input style="margin-left: 10px"type='submit' value="后退">
+    <input type="color">
+    <div class="gn">
+        <input type="submit" id='line' class="on" value="铅笔">
+        <input type="submit" id='paintLine' value="直线">
+        <input type="submit" id='paintstorkeRect' value="画轮廓矩形">
+        <input type="submit" id='paintfillRect' value="画实心矩形">
+        <input type="submit" id='paintstorkepolyon' value="画轮廓多边形">
+        <input type="submit" id='paintfillpolyon' value="画实心多边形">
+        <input type="submit" id='paintstorkecircle' value="画轮廓圆">
+        <input type="submit" id='paintfillcircle' value="画实心圆">
+        <input type="submit" id="paintcreateRect" value="画渐变矩形">
+        <input type="submit" id="paintcreatecircle" value="画镜像圆">
+        <input type="submit" id="paintfillfont" value="字">
+    </div>
+    <div style="float: left;background: #fff;border-radius: 5px;padding: 0 5px">线宽 <input type="text" class="kuan"></div>
+    <div style="float: left;background: #fff;border-radius: 5px;margin-left: 10px;padding: 0 5px">多边形边数 <input type="text" class="bianshu"></div>
+    <div style="float: left;background: #fff;border-radius: 5px;margin-left: 10px;padding: 0 5px">字体大小 <input type="text" class="zitidaxiao"></div>
+
+
+</main>
+</body>
+</html>
+<script>
+    var canvas=document.querySelector('canvas')
+//    console.dir(canvas)
+    var paint=canvas.getContext('2d')
+//    console.log(paint)
+
+
+    var img=paint.getImageData(0,0,canvas.width,canvas.height);
+//    console.log(img)
+    var arr=[img]//储存画布记录
+
+    //调取作用点
+    var input=document.querySelectorAll('input[id]')
+    var id='line'
+//    console.log(input)
+    input.forEach(function (value) {
+//        console.log(value)
+        value.onclick=function () {
+            input.forEach(function (val) {
+                val.classList.remove('on')
+            })
+            value.classList.add('on')
+            id=value.id
+//            console.log(id)
+        }
+    })
+    //后退调取
+    var retreat=document.querySelector('input[value="后退"]')
+    retreat.onclick=function () {
+        if(arr.length>=2){
+            arr.pop()
+            var newimg=arr[arr.length-1]
+            paint.putImageData(newimg,0,0)
+        }else {
+            alert('不能后退了');
+            return
+        }
+    }
+
+    //颜色
+    var color=document.querySelector('input[type=color]')
+//            console.dir(color)
+    var col='#000000'
+    color.onchange=function () {
+        col=color.value
+//        console .log(col)
+    }
+
+    //线宽
+    var line=document.querySelector('.kuan')
+    var linewidth
+    line.onchange=function () {
+        linewidth=this.value
+//        console.log(linewidth)
+    }
+
+    //字体大小
+    var fontdx=document.querySelector('.zitidaxiao')
+    var fontsize=14
+    fontdx.onchange=function () {
+        fontsize=this.value
+    }
+
+    //多边形边数
+    var polyon=document.querySelector('.bianshu')
+    var polyonnub=3
+    polyon.onchange=function () {
+        polyonnub=this.value
+    }
+
+    //执行
+    canvas.onmousedown=function (e) {
+        var cx=e.offsetX
+        var cy=e.offsetY
+        paint.font=`${fontsize}px 宋体`
+        paint.lineWidth=linewidth
+        paint.strokeStyle=col
+        paint.fillStyle=col
+
+        canvas.onmousemove=function (e) {
+            var newcx=e.offsetX
+            var newcy=e.offsetY
+            var width=newcx-cx
+            var height=newcy-cy
+            var r=Math.sqrt(Math.pow(width,2)+Math.pow(height,2))
+            paint.clearRect(0,0,canvas.width,canvas.height)
+            paint.putImageData(arr[arr.length-1],0,0)
+
+            //铅笔
+            if(id=='line'){
+                paint.lineTo(newcx,newcy);
+                paint.stroke();
+            }
+
+            //直线
+            if (id=='paintLine'){
+                paint.beginPath()
+                paint.moveTo(cx,cy)
+                paint.lineTo(newcx,newcy)
+                paint.stroke();
+//                paint.closePath()
+            }
+
+            //空心矩形
+            if(id=='paintstorkeRect'){
+                paint.strokeRect(cx,cy,width,height)
+            }
+
+            //实心矩形
+            if(id=='paintfillRect'){
+                paint.fillRect(cx,cy,width,height)
+            }
+
+            //轮廓多边形
+            if (id=='paintstorkepolyon'){
+                let n=polyonnub;
+                let m=360/n*Math.PI/180;
+//                console.log(r)
+                paint.beginPath()
+                for(var i=0;i<n;i++){
+                    var newm=(i+1)*m
+                    paint.lineTo(cx+r*Math.cos(newm),cy+r*Math.sin(newm))
+                }
+                paint.closePath()
+                paint.stroke()
+            }
+
+            //实心多边形
+            if (id=='paintfillpolyon'){
+                let n=polyonnub;
+                let m=360/n*Math.PI/180;
+//                console.log(r)
+                paint.beginPath()
+                for(var i=0;i<n;i++){
+                    var newm=(i+1)*m
+                    paint.lineTo(cx+r*Math.cos(newm),cy+r*Math.sin(newm))
+                }
+                paint.closePath()
+                paint.fill()
+            }
+
+            //轮廓圆
+            if (id=='paintstorkecircle'){
+                paint.beginPath()
+                paint.arc(cx,cy,r,0,2*Math.PI)
+                paint.stroke()
+            }
+
+            //实心圆
+            if (id=='paintfillcircle'){
+                paint.beginPath()
+                paint.arc(cx,cy,r,0,2*Math.PI)
+                paint.fill()
+            }
+
+            //画渐变矩形
+            if(id=='paintcreateRect'){
+                let create=paint.createLinearGradient(cx,cy,newcx,cy);
+                create.addColorStop(0,'red');
+                create.addColorStop(.17,'orange')
+                create.addColorStop(.33,'yellow')
+                create.addColorStop(.50,'green')
+                create.addColorStop(.67,'blue')
+                create.addColorStop(.83,'indigo')
+                create.addColorStop(1,'violet')
+                paint.fillStyle=create
+                paint.fillRect(cx,cy,width,height)
+            }
+
+            //画镜像圆
+            if(id=='paintcreatecircle'){
+                let create=paint.createRadialGradient(cx,cy,0,cx,cy,r);
+                create.addColorStop(0,'red');
+                create.addColorStop(.17,'orange')
+                create.addColorStop(.33,'yellow')
+                create.addColorStop(.50,'green')
+                create.addColorStop(.67,'blue')
+                create.addColorStop(.83,'indigo')
+                create.addColorStop(1,'violet')
+                paint.fillStyle=create
+                paint.beginPath()
+                paint.arc(cx,cy,r,0,2*Math.PI)
+                paint.fill()
+            }
+
+            //橡皮
+            if(id=='paintdelet'){
+                let del=paint.stroke(cx,cy,width,height)
+                paint.clearRect(cx,cy,width,height);
+            }
+        }
+        canvas.onmouseup=function () {
+            paint.beginPath()
+            //字
+            if (id=='paintfillfont'){
+                let str=prompt('请输入要输入的字')
+                if(str){
+                    paint.fillText(str,cx,cy)
+                }
+            }
+
+
+            img=paint.getImageData(0,0,canvas.width,canvas.height);
+            arr.push(img)
+//            console.log(arr,arr.length)
+//            console.log(img)
+            canvas.onmousemove = null
+        }
+    }
+    //百分比转动
+//    {
+//            var i=0;
+//        function fun() {
+//            console.log(i)
+//            paint.clearRect(0,0,canvas.width,canvas.height);
+//            i++;
+//            paint.lineWidth=20
+//            paint.beginPath();
+//            paint.strokeStyle='black';
+//            paint.arc(100,100,80,0,2*Math.PI*i/100)
+//            paint.stroke()
+//            paint.font='20px';
+//            paint.fillStyle='black';
+//            paint.textAlign='center';
+//            paint.textBaseline='middle';
+//            paint.fillText(i+'%',100,100);
+//            var t=window.requestAnimationFrame(fun)
+//            if(i==100){
+//                cancelAnimationFrame(t)
+//            }
+//        }
+//        fun()
+//    }
+</script>
+
